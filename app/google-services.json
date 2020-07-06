@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1089949354095",
+    "firebase_url": "https://carkeeperapp.firebaseio.com",
+    "project_id": "carkeeperapp",
+    "storage_bucket": "carkeeperapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089949354095:android:8c371a3d71b0352bf8659a",
+        "android_client_info": {
+          "package_name": "com.example.carkeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089949354095-oqqk4n2qv3sdcgiqbs4r04a3kpm8gsvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuv9F865iW0sfR07NjzD0Vtd35_z90JJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089949354095-oqqk4n2qv3sdcgiqbs4r04a3kpm8gsvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
