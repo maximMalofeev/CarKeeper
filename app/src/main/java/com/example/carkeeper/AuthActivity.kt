@@ -28,7 +28,7 @@ class AuthActivity : AppCompatActivity() {
     val currentUser = auth.currentUser
     if (currentUser != null) {
       Log.i("Auth", "User is not null")
-      startMainActivity(currentUser)
+      startMainActivity()
     } else {
       Log.i("Auth", "User is null")
     }
@@ -47,7 +47,7 @@ class AuthActivity : AppCompatActivity() {
           if (task.isSuccessful) {
             Log.d("Auth", "signInWithEmail:success")
             val user = auth.currentUser!!
-            startMainActivity(user)
+            startMainActivity()
           } else {
             Log.d("Auth", "signInWithEmail:failure", task.exception)
             auth.createUserWithEmailAndPassword(email, password)
@@ -55,7 +55,7 @@ class AuthActivity : AppCompatActivity() {
                   if (task.isSuccessful) {
                     Log.d("Auth", "createUserWithEmail:success")
                     val user = auth.currentUser!!
-                    startMainActivity(user)
+                    startMainActivity()
                   } else {
                     Log.w("Auth", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed, try again",
@@ -66,7 +66,7 @@ class AuthActivity : AppCompatActivity() {
         }
   }
 
-  fun startMainActivity(user: FirebaseUser){
+  private fun startMainActivity(){
     val intent = Intent(this, MainActivity::class.java)
     startActivity(intent)
   }
