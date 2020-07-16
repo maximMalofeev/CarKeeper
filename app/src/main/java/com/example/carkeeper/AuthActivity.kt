@@ -46,7 +46,6 @@ class AuthActivity : AppCompatActivity() {
         .addOnCompleteListener(this) { task ->
           if (task.isSuccessful) {
             Log.d("Auth", "signInWithEmail:success")
-            val user = auth.currentUser!!
             startMainActivity()
           } else {
             Log.d("Auth", "signInWithEmail:failure", task.exception)
@@ -54,7 +53,6 @@ class AuthActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                   if (task.isSuccessful) {
                     Log.d("Auth", "createUserWithEmail:success")
-                    val user = auth.currentUser!!
                     startMainActivity()
                   } else {
                     Log.w("Auth", "createUserWithEmail:failure", task.exception)
