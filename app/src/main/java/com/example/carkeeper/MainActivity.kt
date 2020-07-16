@@ -13,15 +13,13 @@ import com.example.carkeeper.R.*
 
 
 class MainActivity : AppCompatActivity() {
-  private lateinit var auth: FirebaseAuth
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(layout.activity_main)
+  }
 
-    auth = Firebase.auth
-
-    Log.i("Auth", "User email: " + auth.currentUser?.email.toString())
+  override fun onStart() {
+    super.onStart()
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         var intent = Intent(this, ProfileActivity::class.java)
         startActivity(intent)
         true
+      } id.logOutMenuItem -> {
+        Firebase.auth.signOut()
+        finish()
+        return true
       }
       else -> super.onContextItemSelected(item)
     }

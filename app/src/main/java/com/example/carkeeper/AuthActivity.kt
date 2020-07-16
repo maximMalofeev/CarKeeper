@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.carkeeper.R.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class AuthActivity : AppCompatActivity() {
@@ -52,6 +53,13 @@ class AuthActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                   if (task.isSuccessful) {
                     Log.d("Auth", "createUserWithEmail:success")
+
+                    val db = Firebase.firestore
+                    db.collection("users").document(FirebaseAuth.getInstance()
+                        .currentUser?.uid.toString()).set(hashMapOf("name" to "", "plate" to ""))
+
+                    Log.i("Tmp", "Current user document must be created")
+
                     startMainActivity()
                   } else {
                     Log.w("Auth", "createUserWithEmail:failure", task.exception)
@@ -63,7 +71,7 @@ class AuthActivity : AppCompatActivity() {
         }
   }
 
-  private fun startMainActivity(){
+  private fun startMainActivity() {
     val intent = Intent(this, MainActivity::class.java)
     startActivity(intent)
   }
