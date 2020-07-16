@@ -1,12 +1,10 @@
 package com.example.carkeeper
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView.AdapterContextMenuInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     return when (item.itemId) {
       id.profileMenuItem -> {
         Log.i("Tmp", "Profile menu item clicked")
+        var intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
         true
       }
       else -> super.onContextItemSelected(item)
