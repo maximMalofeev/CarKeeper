@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -25,11 +27,11 @@ class ProfileActivity : AppCompatActivity() {
     val docRef = db.collection("users").document(Firebase.auth.currentUser?.uid.toString())
     docRef.get().addOnSuccessListener { document ->
       if (document != null) {
-        Log.d("Tmp","Get user data successful ${document.data}")
+        Log.d("Tmp", "Get user data successful ${document.data}")
         nameEditText?.setText(document.data?.get("name").toString())
         plateEditText?.setText(document.data?.get("plate").toString())
       } else {
-        Log.d("Tmp","No such data")
+        Log.d("Tmp", "No such data")
       }
     }.addOnFailureListener { exception ->
       Log.d("Profile", "Get profile finished with ", exception)
@@ -39,8 +41,10 @@ class ProfileActivity : AppCompatActivity() {
   fun onSubmit(view: View) {
     Log.i("Tmp", "submit clicked")
     val db = Firebase.firestore
-    val docRef = db.collection("users").document(Firebase.auth.currentUser?.uid.toString()).set(hashMapOf(
+    db.collection("users").document(Firebase.auth.currentUser?.uid.toString()).set(hashMapOf(
         "name" to nameEditText?.text.toString(), "plate" to plateEditText?.text.toString()
     ))
+    db.collection("plates").document(plateEditText?.text.toString())
+        .update("owners", FieldValue.arrayUnion(Firebase.auth.currentUser?.uid.toString()))
   }
 }
