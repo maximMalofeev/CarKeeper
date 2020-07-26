@@ -2,13 +2,11 @@ package com.example.carkeeper
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -41,10 +39,20 @@ class ProfileActivity : AppCompatActivity() {
   fun onSubmit(view: View) {
     Log.i("Tmp", "submit clicked")
     val db = Firebase.firestore
-    db.collection("users").document(Firebase.auth.currentUser?.uid.toString()).set(hashMapOf(
-        "name" to nameEditText?.text.toString(), "plate" to plateEditText?.text.toString()
-    ))
-    db.collection("plates").document(plateEditText?.text.toString())
-        .update("owners", FieldValue.arrayUnion(Firebase.auth.currentUser?.uid.toString()))
+    db.collection("users").document(Firebase.auth.currentUser?.uid.toString())
+        .update("name", nameEditText?.text.toString())
+    db.collection("users").document(Firebase.auth.currentUser?.uid.toString())
+        .update("plate", plateEditText?.text.toString())
+
+    val docRef = db.collection("plates").document(plateEditText?.text.toString())
+    docRef.get().addOnSuccessListener { document ->
+      if (document != null){
+        if(document.contains("owners")) {
+          document.reference.update("owners", FieldValue.arrayUnion(Firebase.auth.currentUser?.uid.toString()))
+        }else{
+          docRef.set(hashMapOf("owners" to arrayListOf<String>(Firebase.auth.currentUser?.uid.toString())))
+        }
+      }
+    }
   }
 }

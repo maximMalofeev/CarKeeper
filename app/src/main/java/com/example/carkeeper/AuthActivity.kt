@@ -8,9 +8,11 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.carkeeper.R.*
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 
 class AuthActivity : AppCompatActivity() {
@@ -54,13 +56,25 @@ class AuthActivity : AppCompatActivity() {
                   if (task.isSuccessful) {
                     Log.d("Auth", "createUserWithEmail:success")
 
-                    val db = Firebase.firestore
-                    db.collection("users").document(FirebaseAuth.getInstance()
-                        .currentUser?.uid.toString()).set(hashMapOf("name" to "", "plate" to ""))
+                    val token = FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener { task ->
+                      if (!task.isSuccessful){
+                        Log.w("Tmp", "getInstanceId failed", task.exception)
+                        Toast.makeText(baseContext, "Authentication failed, try again",
+                            Toast.LENGTH_SHORT).show()
+                        return@OnCompleteListener
+                      }
 
-                    Log.i("Tmp", "Current user document must be created")
+                      val token = task.result?.token
 
-                    startMainActivity()
+                      val db = Firebase.firestore
+                      db.collection("users").document(FirebaseAuth.getInstance()
+                          .currentUser?.uid.toString()).set(hashMapOf("name" to "", "plate" to "",
+                          "registration_token" to token))
+
+                      Log.i("Tmp", "Current user document must be created")
+
+                      startMainActivity()
+                    })
                   } else {
                     Log.w("Auth", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed, try again",
