@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.carkeeper.R.*
+import com.google.firebase.firestore.ktx.firestore
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,12 +36,21 @@ class MainActivity : AppCompatActivity() {
         var intent = Intent(this, ProfileActivity::class.java)
         startActivity(intent)
         true
-      } id.logOutMenuItem -> {
+      }
+      id.logOutMenuItem -> {
         Firebase.auth.signOut()
         finish()
         return true
       }
       else -> super.onContextItemSelected(item)
     }
+  }
+
+  fun onNotify(view: View) {
+    var plate = findViewById<EditText>(R.id.plateEditText).text.toString()
+    val db = Firebase.firestore
+    db.collection("in-danger").document(plate).set(hashMapOf<String, String>())
+
+    Log.i("Tmp", "Notify users with $plate plate")
   }
 }
